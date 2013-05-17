@@ -1,8 +1,10 @@
 package com.unrc.app;
 
 import com.unrc.app.models.User;
-import com.unrc.app.models.Inmueble;
-import com.unrc.app.models.Propietario;
+import com.unrc.app.models.Building;
+import com.unrc.app.models.Owner;
+import com.unrc.app.models.RealEstate;
+import com.unrc.app.models.Location;
 
 import org.javalite.activejdbc.Base;
 import org.slf4j.Logger;
@@ -14,32 +16,56 @@ public class Inmo {
         Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/inmoapp_development", "root", "root");
 
         User e = new User();
-        e.set("email", "user@email.com");
-        e.set("first_name", "John");
-        e.set("last_name", "Doe");
+        
+        e.set("nombre_usuario", "John");
+        e.set("contrasenia", "888");
         e.saveIt();
 
-	Propietario p = new Propietario();
-        p.set("tipo", "particular");
-	p.set("nombre", "pedro");
-	p.set("apellido", "gomez");
-	p.set("email", "pgomez@gmail.com");
+	Location l = new Location();
+        
+	l.set("nombre", "rio cuarto");
+        l.set("codigo_postal", 5800);
+	l.saveIt();
+
+	RealEstate re = new RealEstate();
+	re.set("nombre", "gutierrez");
+        re.set("email", "gutierrez@gmail.com");
+	re.set("telefono", 4628374);
+	re.set("direccion", "La Rioja 523");
+        re.set("sitio_web", "gutierrez.web");
+	re.set("location_id", l.get("id"));
+	re.saveIt();
+
+	Owner p = new Owner();
+	p.set("nombre", "pedro gomez");
+        p.set("email", "pgomez@gmail.com");
 	p.set("telefono", 4628374);
 	p.set("direccion", "La Rioja 523");
+        p.set("real_estate_id",re.get("id"));
+	p.set("location_id", l.get("id"));
 	p.saveIt();
+
 	
-	Inmueble i = new Inmueble();
-        i.set("tipo", "casa");
-	i.set("localidad", "chucul");
-	i.set("direccion", "mendoza 235");
-	i.set("cant_ambientes",6);
-	i.set("cant_banios", 3);
-	i.set("precio", 650.000);
-	i.set("descripcion", "zona rural, granja");
-	i.set("operacion", "vende");
-	i.set("propietario", p.get("id"));
-	i.set("fecha", "2013-12-06");
-        i.saveIt();
+
+	
+
+	Building b = new Building();
+        b.set("tipo", "casa");
+	b.set("location_id", l.get("id"));
+	b.set("direccion", "mendoza 235");
+	b.set("cant_habitaciones",6);
+	b.set("cant_banios", 3);
+	b.set("precio", 650000);
+	b.set("descripcion", "zona rural granja");
+	b.set("operacion", "venta");
+	b.set("owner_id", p.get("id"));
+	b.set("fecha_fin", "2013-12-06");
+        b.set("fecha_inicio","2013-01-02");
+	b.set("real_estate_id",re.get("id"));
+        b.saveIt();
+
+        
+
 	
 	
         System.out.println( "Hello World!" );

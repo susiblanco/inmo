@@ -13,7 +13,7 @@ public class UserSpec{
 
     @Before
     public void before(){
-        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/inmoapp_development", "root", "");
+        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/inmoapp_development", "root", "root");
         Base.openTransaction();
     }
 
@@ -30,11 +30,11 @@ public class UserSpec{
 
         //check errors
         the(user).shouldNotBe("valid");
-        the(user.errors().get("first_name")).shouldBeEqual("value is missing");
-        the(user.errors().get("last_name")).shouldBeEqual("value is missing");
+        the(user.errors().get("nombre_usuario")).shouldBeEqual("value is missing");
+        the(user.errors().get("contrasenia")).shouldBeEqual("value is missing");
 
         //set missing values
-        user.set("first_name", "John", "last_name", "Doe");
+        user.set("nombre_usuario", "John", "contrasenia", "1111");
 
         //all is good:
         the(user).shouldBe("valid");
