@@ -13,14 +13,15 @@ CREATE TABLE buildings(
   direccion VARCHAR(60),
   cant_habitaciones INT(11),
   cant_banios INT(11),
+  superficie INT(11),
   precio FLOAT,
   descripcion text ,
   operacion ENUM('venta','alquiler'),
   fecha_inicio DATE,
   fecha_fin DATE,
-  owner_id INT(11) NOT NULL references owners(id),
-  location_id INT(11) NOT NULL references locations(id),
-  real_estate_id INT(11) NOT NULL references real_estates(id)									
+  owner_id INT(11),
+  location_id INT(11),
+  real_estate_id INT(11)									
 );
 
 DROP TABLE IF EXISTS owners;
@@ -30,8 +31,8 @@ CREATE TABLE owners(
   email VARCHAR(60),
   telefono INT(16),
   direccion VARCHAR(60),
-  real_estate_id INT(11) NOT NULL references real_estates(id),
-  location_id INT(11) NOT NULL references locations(id)									 
+  real_estate_id INT(11),
+  location_id INT(11)									 
 );
 
 DROP TABLE IF EXISTS real_estates;
@@ -42,7 +43,7 @@ CREATE TABLE real_estates(
   email VARCHAR(60),
   sitio_web VARCHAR(60),
   direccion VARCHAR(60),
-  location_id INT(11) NOT NULL references locations(id)
+  location_id INT(11)
 );
 
 DROP TABLE IF EXISTS admins;
