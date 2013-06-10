@@ -8,5 +8,6 @@ public class RealEstate extends Model {
   static{
       validatePresenceOf("nombre","direccion","telefono","email","sitio_web");
       validateEmailOf("email");
+      validateNumericalityOf("telefono");
   }
 }
