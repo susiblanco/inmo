@@ -32,6 +32,7 @@ public class OwnerSpec{
 
         //check errors
         the(owner).shouldNotBe("valid");
+        the(owner.errors().get("dni")).shouldBeEqual("value is missing");
         the(owner.errors().get("nombre")).shouldBeEqual("value is missing");
         the(owner.errors().get("direccion")).shouldBeEqual("value is missing");
         the(owner.errors().get("telefono")).shouldBeEqual("value is missing");
@@ -39,7 +40,7 @@ public class OwnerSpec{
 
 
         //set missing values
-        owner.set("nombre", "Juan","direccion", "mendoza 485","telefono", 49785566,"email", "Juanfer@gmail.com");
+        owner.set("dni", 21407422,"nombre", "Juan","direccion", "mendoza 485","telefono", 49785566,"email", "Juanfer@gmail.com");
 
 
         //all is good:
@@ -58,13 +59,14 @@ public class OwnerSpec{
         Owner owner = new Owner();
 
 	 //set missing values
-        owner.set("nombre", "Juan","direccion", "mendoza 485","telefono", 49785566,"email", "Juanfer@gmail.com");
-        owner.saveIt();
-        location.add(owner);  
-	owner.saveIt();
+    owner.set("dni", 21407489, "nombre", "Juan","direccion", "mendoza 485","telefono", 49785566,"email", "Juanfer@gmail.com");
+    owner.saveIt();
+    
+    location.add(owner);  
+    owner.saveIt();
 
-	Owner o = Owner.findFirst("location_id = ?", location.getId());
-        the(owner.getId()).shouldBeEqual(o.getId());
+    Owner o = Owner.findFirst("location_id = ?", location.getId());
+    the(owner.getId()).shouldBeEqual(o.getId());
         
     }
 }
