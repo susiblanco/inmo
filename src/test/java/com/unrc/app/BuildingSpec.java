@@ -42,8 +42,6 @@ public class BuildingSpec{
 	the(building.errors().get("cant_banios")).shouldBeEqual("value is missing");
 	the(building.errors().get("direccion")).shouldBeEqual("value is missing");
 	the(building.errors().get("precio")).shouldBeEqual("value is missing");
-	the(building.errors().get("fecha_inicio")).shouldBeEqual("value is missing");
-	the(building.errors().get("fecha_fin")).shouldBeEqual("value is missing");
       
 
 
@@ -56,8 +54,6 @@ public class BuildingSpec{
         building.set("cant_banios", 2);
         building.set("direccion", "cordoba 73");
         building.set("precio", 120000);
-        building.set("fecha_inicio", "2013-12-06");
-        building.set("fecha_fin", "2013-12-25");
        
 
         //all is good:
@@ -66,16 +62,9 @@ public class BuildingSpec{
 
     @Test
     public void shouldSaveAssociation(){
-
-        RealEstate realestate = new RealEstate();
-	realestate.set("nombre","Gutierrez");
-	realestate.set("telefono",154899654);
-	realestate.set("direccion","Sarmiento 256");
-	realestate.set("email","gutierrez98@gmail.com");
-	realestate.set("sitio_web","Gutierrezinmoweb");
-	realestate.saveIt();
 	
 	Owner owner = new Owner();
+	owner.set("dni",21407489);
 	owner.set("nombre","pedro galitu");
 	owner.set("direccion","estrada 847");
 	owner.set("telefono",46895789);
@@ -87,30 +76,23 @@ public class BuildingSpec{
 	location.set("codigo_postal",5874);
 	location.saveIt();
         
-        Building building = new Building();
-        
-        //set missing values
-        building.set("tipo", "casa");
-        building.set("descripcion", "quinta");
-        building.set("superficie", 500);
-        building.set("operacion", "venta");
-        building.set("cant_habitaciones", 6);
-        building.set("cant_banios", 2);
-        building.set("direccion", "cordoba 73");
-        building.set("precio", 120000);
-        building.set("fecha_inicio", "2013-12-06");
-        building.set("fecha_fin", "2013-12-25");
-        building.saveIt();
+    Building building = new Building();
+    
+    //set missing values
+    building.set("tipo", "casa");
+    building.set("descripcion", "quinta");
+    building.set("superficie", 500);
+    building.set("operacion", "venta");
+    building.set("cant_habitaciones", 6);
+    building.set("cant_banios", 2);
+    building.set("direccion", "cordoba 73");
+    building.set("precio", 120000);
+    building.saveIt();
 
 	owner.add(building);
 	location.add(building);
-	realestate.add(building);
-        building.saveIt();
 
 	Building b = Building.findFirst("location_id = ?", location.getId());
-        the(building.getId()).shouldBeEqual(b.getId());
-	
-	b = Building.findFirst("real_estate_id = ?", realestate.getId());
         the(building.getId()).shouldBeEqual(b.getId());
 
 	b = Building.findFirst("owner_id = ?", owner.getId());
