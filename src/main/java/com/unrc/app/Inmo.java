@@ -142,14 +142,15 @@ public class Inmo {
 
                     //tabla de inmobiliarias
                     html+="<table border='1'>"
-                        +"<tr><th>nombre</th><th>telefono</th><th>email</th><th>sitio_web</th><th>direccion</th><th>localidad</th></tr>";
+                        +"<tr><th>nombre</th><th>telefono</th><th>email</th><th>sitio_web</th>"
+                        +"<th>direccion</th><th>localidad</th><th>borrar</th></tr>";
                     List<RealEstate> inmobiliarias = RealEstate.findAll();
                     for(RealEstate i: inmobiliarias){  
                         html +="<tr><td>"+i.get("nombre")+"</td><td>"+i.get("telefono")
                              +"</td><td>"+i.get("email")+"</td><td>"+i.get("sitio_web")
                              +"</td><td>"+i.get("direccion")+"</td>";
                         Location loc = i.parent(Location.class);
-                        html +="<td>"+loc.get("nombre")+"</td></tr>";
+                        html +="<td>"+loc.get("nombre")+"</td><td><a href='realestate/del/"+i.get("id")+"'>borrar</a></td></tr>";
                     }
                     html+="</table>";
                 Base.close();
@@ -180,6 +181,20 @@ public class Inmo {
                 return "creada";
             }
         });
+
+        //borrar la inmobiliaria que tenga el atributo id igual al valor pasado por parametro y regresa a getionar inmobiliaria
+	get(new Route("/realestate/del/:id") {	
+         @Override
+         public Object handle(Request request, Response response) {
+            int id = Integer.parseInt(request.params(":id"));
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/inmoapp_development", "root", "root");
+	      RealEstate i = RealEstate.findFirst("id = ?", id);
+	      i.delete();
+            Base.close();
+            response.redirect("/realestates");
+            return null;
+         }
+      	});
 
         //-----------------------------------------------------------------------------------//
         // GESTIONAR INMUEBLES                                                               //
