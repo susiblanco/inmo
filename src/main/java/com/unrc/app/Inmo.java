@@ -65,11 +65,12 @@ public class Inmo {
                 
                     //tabla de localidades
                     html+="<table border='1'>"
-                        +"<tr><th>nombre</th><th>codigo postal</th></tr>";
+                        +"<tr><th>nombre</th><th>codigo postal</th><th>borrar</th></tr>";
                         
                     List<Location> localidades = Location.findAll();
                     for(Location l: localidades){  
-                        html +=" <tr><td>"+l.get("nombre")+"</td><td>"+l.get("codigo_postal")+"</td></tr>";
+                        html +=" <tr><td>"+l.get("nombre")+"</td><td>"+l.get("codigo_postal")
+                             +"</td><td><a href='location/del/"+l.get("id")+"'>borrar</a></td></tr>";
                     }
                     
                     html+="</table>";
@@ -95,6 +96,20 @@ public class Inmo {
                 return "creada";
             }
         });
+
+              //borrar la localidad que tenga el atributo id igual al valor pasado por parametro y regresa a getionar localidades
+	get(new Route("/location/del/:id") {	
+         @Override
+         public Object handle(Request request, Response response) {
+            int id = Integer.parseInt(request.params(":id"));
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/inmoapp_development", "root", "root");
+	      Location l = Location.findFirst("id = ?", id);
+	      l.delete();
+            Base.close();
+            response.redirect("/locations");
+            return null;
+         }
+      	});
 
 
         //------------------------------------------------------------------------------//
@@ -217,8 +232,8 @@ public class Inmo {
 
                     //tabla de inmuebles
                     html+="<table border='1'>"
-                        +"<tr><th>tipo</th><th>operacion</th><th>descripcion</th><th>cant_habitaciones</th><th>cant_ba&ntilde;os</th>"
-                        +"<th>superficie</th><th>precio</th><th>direccion</th><th>localidad</th><th>dni propietario</th></tr>";
+                        +"<tr><th>tipo</th><th>operacion</th><th>descripcion</th><th>cant_hab</th><th>cant_ba&ntilde;os</th>"
+                        +"<th>sup</th><th>precio</th><th>direccion</th><th>localidad</th><th>dni propietario</th></tr>";
                     List<Building> inmuebles = Building.findAll();
                     for(Building i: inmuebles){  
                         html +="<tr><td>"+i.get("tipo")+"</td><td>"+i.get("operacion")
@@ -261,7 +276,7 @@ public class Inmo {
                     Owner o = Owner.findFirst("id = ?", prop);
                     o.add(i);
                 Base.close();
-                //regresa a gestionar propietarios
+                //regresa a gestionar inmuebles
                 response.redirect("/buildings");
                 return "creada";
             }
